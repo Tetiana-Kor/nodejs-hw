@@ -22,17 +22,9 @@ const contactSchema = new Schema(
       enum: ["free", "pro", "premium"],
       required: [true, "Set subscription"],
     },
-    password: {
-      type: String,
-      required: [true, "Set password"],
-    },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: "user",
-    },
-    token: {
-      type: String,
-      default: "",
     },
   },
   { versionKey: false, timestamps: true }

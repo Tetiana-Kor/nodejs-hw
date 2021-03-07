@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const bcrypt = require("bcryptjs");
-// const { Sex } = require("../../helpers/constatns");
 const SALT_WORK_FACTOR = 8;
 
 const userSchema = new Schema(
