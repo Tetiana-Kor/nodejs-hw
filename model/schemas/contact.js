@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const { Schema, model, SchemaTypes } = mongoose;
 
 const contactSchema = new Schema(
   {
@@ -22,13 +22,9 @@ const contactSchema = new Schema(
       enum: ["free", "pro", "premium"],
       required: [true, "Set subscription"],
     },
-    password: {
-      type: String,
-      required: [true, "Set password"],
-    },
-    token: {
-      type: String,
-      default: "",
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
