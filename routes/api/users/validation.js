@@ -9,6 +9,10 @@ const schemaAddUser = Joi.object({
   subscription: Joi.string().required(),
 });
 
+const schemaUpdateSub = Joi.object({
+  subscription: Joi.string().required(),
+});
+
 const validate = (schema, obj, next) => {
   const { error } = schema.validate(obj);
   if (error) {
@@ -23,4 +27,8 @@ const validate = (schema, obj, next) => {
 
 module.exports.addUser = (req, res, next) => {
   return validate(schemaAddUser, req.body, next);
+};
+
+module.exports.updateSub = (req, res, next) => {
+  return validate(schemaUpdateSub, req.body, next);
 };
