@@ -32,3 +32,15 @@ module.exports.addUser = (req, res, next) => {
 module.exports.updateSub = (req, res, next) => {
   return validate(schemaUpdateSub, req.body, next);
 };
+
+module.exports.validateUploadAvatar = (req, res, next) => {
+  if (!req.file) {
+    return res.status(HttpCode.BAD_REQUEST).json({
+      status: "error",
+      code: HttpCode.BAD_REQUEST,
+      data: "Bad request",
+      message: "Avatar is not found",
+    });
+  }
+  next();
+};
