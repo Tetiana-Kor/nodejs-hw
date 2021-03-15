@@ -140,7 +140,7 @@ const saveAvatarToStatic = async (req) => {
   const avatarURL = path.normalize(path.join(id, newNameAvatar));
   try {
     await fs.unlink(
-      path.join(process.cwd(), AVATARS_OF_USERS, req.user.avatar)
+      path.join(process.cwd(), AVATARS_OF_USERS, req.user.avatarURL)
     );
   } catch (error) {
     console.log(error.message);
