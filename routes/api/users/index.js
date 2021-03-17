@@ -6,13 +6,13 @@ const guard = require("../../../helpers/guard");
 const upload = require("../../../helpers/upload");
 const { createAccountLimiter } = require("../../../helpers/rate-limit-reg");
 
+
 router.post(
   "/auth/register",
   createAccountLimiter,
   validate.addUser,
   userController.register
 );
-
 router.post("/auth/login", userController.login);
 router.post("/auth/logout", guard, userController.logout);
 router.get("/current", guard, userController.currentUser);
