@@ -2,6 +2,9 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
+require("dotenv").config();
+
 const rateLimit = require("express-rate-limit");
 const { HttpCode } = require("./helpers/constants");
 
@@ -9,6 +12,10 @@ const contactsRouter = require("./routes/api/contacts");
 const usersRouter = require("./routes/api/users");
 
 const app = express();
+
+const PUBLIC_DIR = process.env.PUBLIC_DIR;
+const AVATARS_OF_USERS = path.join(PUBLIC_DIR, process.env.AVATARS_OF_USERS);
+app.use(express.static(path.join(__dirname, AVATARS_OF_USERS)));
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 

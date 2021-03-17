@@ -3,7 +3,9 @@ const router = express.Router();
 const validate = require("./validation");
 const userController = require("../../../controller/users");
 const guard = require("../../../helpers/guard");
+const upload = require("../../../helpers/upload");
 const { createAccountLimiter } = require("../../../helpers/rate-limit-reg");
+
 
 router.post(
   "/auth/register",
@@ -19,6 +21,12 @@ router.patch(
   guard,
   validate.updateSub,
   userController.updateSubscription
+);
+router.patch(
+  "/avatars",
+  [guard, upload.single("avatar")],
+  validate.validateUploadAvatar,
+  userController.avatars
 );
 
 module.exports = router;
