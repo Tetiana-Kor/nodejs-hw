@@ -31,7 +31,7 @@ const updateToken = jest.fn((id, token) => {
 });
 
 const updateSub = jest.fn((id, subscription) => {
-  return subscription;
+  return {};
 });
 
 const updateAvatar = jest.fn((id, avatar) => {

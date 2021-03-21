@@ -1,10 +1,12 @@
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const fs = require("fs/promises");
+const path = require("path");
 require("dotenv").config();
 
 const app = require("../app");
 const { User, newUser } = require("../model/__mocks__/data");
+const userPath = path.join(__dirname,  "default.jpg");
 
 const SECRET_KEY = process.env.JWT_SECRET;
 const issueToken = (payload, secret) => jwt.sign(payload, secret);
@@ -58,7 +60,7 @@ describe("Testing the route api/users", () => {
   });
 
   it("should return 200 upload avatar", async (done) => {
-    const buffer = await fs.readFile("./test/default.jpg");
+    const buffer = await fs.readFile(userPath);
     const res = await request(app)
       .patch(`/api/users/avatars`)
       .set("Authorization", `Bearer ${token}`)

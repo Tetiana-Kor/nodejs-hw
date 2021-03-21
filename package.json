@@ -8,7 +8,7 @@
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js",
     "dev:debug": "node --inspect ./bin/server.js",
-    "test": "cross-env NODE_ENV=test jest --no-cache --verbose",
+    "test": "cross-env NODE_ENV=test jest --no-cache --verbose --detectOpenHandles",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll"
   },
