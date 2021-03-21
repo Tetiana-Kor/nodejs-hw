@@ -5,6 +5,7 @@ const path = require("path");
 const Jimp = require("jimp");
 const createFolderIsExist = require("../helpers/create-dir");
 const { HttpCode } = require("../helpers/constants");
+// const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 const SECRET_KEY = process.env.JWT_SECRET;
 

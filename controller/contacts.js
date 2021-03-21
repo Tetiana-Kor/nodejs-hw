@@ -1,4 +1,4 @@
-const Contacts = require("../model/index");
+const Contacts = require("../model/contacts");
 const { HttpCode } = require("../helpers/constants");
 
 const getAll = async (req, res, next) => {
