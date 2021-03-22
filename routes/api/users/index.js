@@ -9,7 +9,7 @@ const { createAccountLimiter } = require("../../../helpers/rate-limit-reg");
 router.post(
   "/auth/register",
   createAccountLimiter,
-  // validate.addUser,
+  validate.addUser,
   userController.register
 );
 router.post("/auth/login", userController.login);
