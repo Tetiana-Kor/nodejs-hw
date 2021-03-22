@@ -2,11 +2,9 @@ const Joi = require("joi");
 const { HttpCode } = require("../../../helpers/constants");
 
 const schemaAddUser = Joi.object({
-  email: Joi.string()
-    .email(/\S+@\S+\.\S+/)
-    .required(),
-  password: Joi.string().min(6).max(20).required(),
-  subscription: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(2).max(20).required(),
+  subscription: Joi.string().optional(),
 });
 
 const schemaUpdateSub = Joi.object({
@@ -44,4 +42,3 @@ module.exports.validateUploadAvatar = (req, res, next) => {
   }
   next();
 };
-

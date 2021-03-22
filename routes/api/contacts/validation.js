@@ -2,19 +2,17 @@ const Joi = require("joi");
 const { HttpCode } = require("../../../helpers/constants");
 
 const schemaAddContact = Joi.object({
-  name: Joi.string().min(3).max(40).required(),
+  name: Joi.string().min(2).max(40).required(),
   email: Joi.string().email().required(),
   phone: Joi.string().required(),
-  subscription: Joi.string().required(),
-  password: Joi.string().min(6).max(20).required(),
+  subscription: Joi.string().optional(),
 });
 
 const schemaUpdateContact = Joi.object({
-  name: Joi.string().min(3).max(40).optional(),
+  name: Joi.string().min(2).max(40).optional(),
   email: Joi.string().email().optional(),
   phone: Joi.string().optional(),
   subscription: Joi.string().optional(),
-  password: Joi.string().min(6).max(20).optional(),
 });
 
 const validate = (schema, obj, next) => {

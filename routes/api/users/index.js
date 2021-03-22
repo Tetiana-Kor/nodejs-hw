@@ -6,7 +6,6 @@ const guard = require("../../../helpers/guard");
 const upload = require("../../../helpers/upload");
 const { createAccountLimiter } = require("../../../helpers/rate-limit-reg");
 
-
 router.post(
   "/auth/register",
   createAccountLimiter,
@@ -24,8 +23,7 @@ router.patch(
 );
 router.patch(
   "/avatars",
-  [guard, upload.single("avatar")],
-  validate.validateUploadAvatar,
+  [guard, upload.single("avatar"), validate.validateUploadAvatar],
   userController.avatars
 );
 

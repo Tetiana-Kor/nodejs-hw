@@ -5,6 +5,7 @@ const path = require("path");
 const Jimp = require("jimp");
 const createFolderIsExist = require("../helpers/create-dir");
 const { HttpCode } = require("../helpers/constants");
+// const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 const SECRET_KEY = process.env.JWT_SECRET;
 
@@ -28,7 +29,7 @@ const register = async (req, res, next) => {
         id: newUser.id,
         email: newUser.email,
         subscription: newUser.subscription,
-        avatar: newUser.avatarURL,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -66,7 +67,7 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  const id = req.user.id;
+  const id = req.user._id;
   await Users.updateToken(id, null);
   return res.status(HttpCode.NO_CONTENT).json({});
 };
@@ -77,7 +78,7 @@ const currentUser = async (req, res, next) => {
       status: "success",
       code: HttpCode.OK,
       data: {
-        id: req.user.id,
+        id: req.user._id,
         email: req.user.email,
         subscription: req.user.subscription,
       },
@@ -89,7 +90,7 @@ const currentUser = async (req, res, next) => {
 
 const updateSubscription = async (req, res, next) => {
   try {
-    const id = req.user.id;
+    const id = req.user._id;
     const subscription = req.body.subscription;
     await Users.updateSub(id, subscription);
 
@@ -109,7 +110,7 @@ const updateSubscription = async (req, res, next) => {
 
 const avatars = async (req, res, next) => {
   try {
-    const id = req.user.id;
+    const id = req.user._id;
     const avatarURL = await saveAvatarToStatic(req);
     await Users.updateAvatar(id, avatarURL);
     return res.status(HttpCode.OK).json({
@@ -125,7 +126,7 @@ const avatars = async (req, res, next) => {
 };
 
 const saveAvatarToStatic = async (req) => {
-  const id = req.user.id;
+  const id = req.user._id;
   const PUBLIC_DIR = process.env.PUBLIC_DIR;
   const AVATARS_OF_USERS = path.join(PUBLIC_DIR, process.env.AVATARS_OF_USERS);
   const pathFile = req.file.path;
