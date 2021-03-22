@@ -35,13 +35,6 @@ const updateSub = jest.fn((id, subscription) => {
 });
 
 const updateAvatar = jest.fn((id, avatar) => {
-  // const [user] = users.filter((el) => String(el._id) === String(id));
-
-  // if (user) {
-  //   user.avatarURL = avatar;
-  //   return user.avatarURL;
-  // }
-
   return {};
 });
 

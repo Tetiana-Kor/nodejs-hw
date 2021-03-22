@@ -1,12 +1,10 @@
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const fs = require("fs/promises");
-const path = require("path");
 require("dotenv").config();
 
 const app = require("../app");
 const { User, newUser } = require("../model/__mocks__/data");
-const userPath = path.join(__dirname,  "default.jpg");
 
 const SECRET_KEY = process.env.JWT_SECRET;
 const issueToken = (payload, secret) => jwt.sign(payload, secret);
@@ -15,7 +13,6 @@ User.token = token;
 
 jest.mock("../model/contacts.js");
 jest.mock("../model/users.js");
-// jest.mock("cloudinary");
 
 describe("Testing the route api/users", () => {
   it("should return 201 registration", async (done) => {
@@ -60,15 +57,15 @@ describe("Testing the route api/users", () => {
   });
 
   it("should return 200 upload avatar", async (done) => {
-    const buffer = await fs.readFile(userPath);
+    const buffer = await fs.readFile("./test/default.jpg");
     const res = await request(app)
       .patch(`/api/users/avatars`)
       .set("Authorization", `Bearer ${token}`)
       .attach("avatar", buffer, "default.jpg");
-    console.log(res.body);
 
     expect(res.status).toEqual(200);
     expect(res.body).toBeDefined();
+    expect(res.body.data).toHaveProperty("avatarURL");
     done();
   });
 });
