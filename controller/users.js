@@ -163,7 +163,7 @@ const saveAvatarToStatic = async (req) => {
 
 const verify = async (req, res, next) => {
   try {
-    const user = Users.findbyVerifyToken(req.params.verificationToken);
+    const user = await Users.findbyVerifyToken(req.params.verificationToken);
     if (user) {
       await Users.updateVerifyToken(user.id, true, null);
       return res.status(HttpCode.OK).json({
@@ -172,11 +172,11 @@ const verify = async (req, res, next) => {
         message: "Verification successful!",
       });
     }
-    return res.status(HttpCode.BAD_REQUEST).json({
+    return res.status(HttpCode.NOT_FOUND).json({
       status: "error",
-      code: HttpCode.BAD_REQUEST,
-      data: "Bad request",
-      message: "Link is not valid",
+      code: HttpCode.NOT_FOUND,
+      data: "Not found",
+      message: "User not found",
     });
   } catch (e) {
     next(e);

@@ -34,7 +34,7 @@ const updateToken = async (id, token) => {
 };
 
 const updateVerifyToken = async (id, verify, verificationToken) => {
-  return await User.updateOneAndUpdate(
+  return await User.findOneAndUpdate(
     { _id: id },
     { verify, verificationToken }
   );

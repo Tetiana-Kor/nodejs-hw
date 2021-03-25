@@ -61,7 +61,7 @@ class EmailService {
       subject: "Сonfirmation of registration",
       html: emailBody,
     };
-    await this.#sender.sgMail.send(msg);
+    await this.#sender.send(msg);
   }
 }
 
