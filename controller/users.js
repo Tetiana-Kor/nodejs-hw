@@ -3,15 +3,18 @@ const Users = require("../model/users");
 const fs = require("fs").promises;
 const path = require("path");
 const Jimp = require("jimp");
+const { nanoid } = require("nanoid");
+
 const createFolderIsExist = require("../helpers/create-dir");
 const { HttpCode } = require("../helpers/constants");
+const EmailService = require("../services/email");
 // const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 const SECRET_KEY = process.env.JWT_SECRET;
 
 const register = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { email, name } = req.body;
     const user = await Users.findByEmail(email);
     if (user) {
       return res.status(HttpCode.CONFLICT).json({
@@ -21,7 +24,16 @@ const register = async (req, res, next) => {
         message: "Email is already in use",
       });
     }
-    const newUser = await Users.create(req.body);
+
+    const verificationToken = nanoid();
+    const emailService = new EmailService(process.env.NODE_ENV);
+    await emailService.sendEmail(verificationToken, email, name);
+
+    const newUser = await Users.create({
+      ...req.body,
+      verify: false,
+      verificationToken,
+    });
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
@@ -42,7 +54,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await Users.findByEmail(email);
     const isValidPassword = await user?.validPassword(password);
-    if (!user || !isValidPassword) {
+    if (!user || !isValidPassword || !user.verify) {
       return res.status(HttpCode.UNAUTHORIZED).json({
         status: "error",
         code: HttpCode.UNAUTHORIZED,
@@ -149,6 +161,28 @@ const saveAvatarToStatic = async (req) => {
   return avatarURL;
 };
 
+const verify = async (req, res, next) => {
+  try {
+    const user = Users.findbyVerifyToken(req.params.verificationToken);
+    if (user) {
+      await Users.updateVerifyToken(user.id, true, null);
+      return res.status(HttpCode.OK).json({
+        status: "success",
+        code: HttpCode.OK,
+        message: "Verification successful!",
+      });
+    }
+    return res.status(HttpCode.BAD_REQUEST).json({
+      status: "error",
+      code: HttpCode.BAD_REQUEST,
+      data: "Bad request",
+      message: "Link is not valid",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -156,4 +190,5 @@ module.exports = {
   currentUser,
   updateSubscription,
   avatars,
+  verify,
 };

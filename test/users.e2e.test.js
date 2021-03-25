@@ -17,7 +17,7 @@ jest.mock("../model/users.js");
 describe("Testing the route api/users", () => {
   let idUser;
   describe("Testing user registration", () => {
-    it("should return 201 registration", async (done) => {
+    it("should return 201 registration", async () => {
       const res = await request(app)
         .post("/api/users/auth/register")
         .send(newUser)
@@ -25,9 +25,8 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(201);
       expect(res.body).toBeDefined();
-      done();
     });
-    it("should return 409 registration - email in use", async (done) => {
+    it("should return 409 registration - email in use", async () => {
       const res = await request(app)
         .post("/api/users/auth/register")
         .send(newUser)
@@ -35,9 +34,8 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(409);
       expect(res.body).toBeDefined();
-      done();
     });
-    it("should return 400 registration required fields", async (done) => {
+    it("should return 400 registration required fields", async () => {
       const res = await request(app)
         .post("/api/users/auth/register")
         .send({ email: "", password: "" })
@@ -45,12 +43,11 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(400);
       expect(res.body).toBeDefined();
-      done();
     });
   });
 
   describe("Testing user login", () => {
-    it("should return 200 login", async (done) => {
+    it("should return 200 login", async () => {
       const res = await request(app)
         .post("/api/users/auth/login")
         .send(newUser)
@@ -58,9 +55,8 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
-      done();
     });
-    it("should return 401 login", async (done) => {
+    it("should return 401 login", async () => {
       const res = await request(app)
         .post("/api/users/auth/login")
         .send({ email: "fake@test.com", password: "123456" })
@@ -68,22 +64,20 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(401);
       expect(res.body).toBeDefined();
-      done();
     });
   });
 
   describe("Testing update user", () => {
-    it("should return 200 current user", async (done) => {
+    it("should return 200 current user", async () => {
       const res = await request(app)
         .get("/api/users/current")
         .set("Authorization", `Bearer ${token}`);
 
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
-      done();
     });
 
-    it("should return 200 update subscription", async (done) => {
+    it("should return 200 update subscription", async () => {
       const res = await request(app)
         .patch(`/api/users/sub/${idUser}`)
         .set("Authorization", `Bearer ${token}`)
@@ -92,10 +86,9 @@ describe("Testing the route api/users", () => {
 
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
-      done();
     });
 
-    it("should return 200 upload avatar", async (done) => {
+    it("should return 200 upload avatar", async () => {
       const buffer = await fs.readFile("./test/default.jpg");
       const res = await request(app)
         .patch(`/api/users/avatars`)
@@ -105,16 +98,14 @@ describe("Testing the route api/users", () => {
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
       expect(res.body.data).toHaveProperty("avatarURL");
-      done();
     });
-    it("should return 204 logout user", async (done) => {
+    it("should return 204 logout user", async () => {
       const res = await request(app)
         .post(`/api/users/auth/logout`)
         .set("Authorization", `Bearer ${token}`);
 
       expect(res.status).toEqual(204);
       expect(res.body).toBeDefined();
-      done();
     });
   });
 });
